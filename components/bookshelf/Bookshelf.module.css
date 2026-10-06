@@ -180,6 +180,18 @@
   opacity: 0;
 }
 
+/* Desktop only: drag the open 3D book to turn it. */
+@media (hover: hover) and (pointer: fine) {
+  .shelf[data-gl="3d"] .book[data-open="true"] {
+    cursor: grab;
+    user-select: none;
+  }
+
+  .shelf[data-gl="3d"] .book[data-open="true"]:active {
+    cursor: grabbing;
+  }
+}
+
 .below {
   display: flex;
   align-items: flex-start;

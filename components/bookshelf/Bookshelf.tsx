@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
 import type { Book } from "@/content";
 import { coverColour, fixedSwatch, type Swatch } from "./colour";
 import type { Shelf3D, ShelfBook } from "./shelf3d";
@@ -10,7 +10,8 @@ import styles from "./Bookshelf.module.css";
 // 60deg and its cover opens out at 30deg; the rest stand spine-out.
 // The shelf never scrolls on its own terms: it always slides to centre the
 // open book, so moving along it means opening another one. Click a spine,
-// use the ‹ › buttons, or the arrow keys.
+// use the ‹ › buttons, or the arrow keys. On desktop, drag the open 3D
+// book to turn it; touch does not drag or swipe the shelf.
 //
 // All of that is still CSS. Once three.js and the model load, shelf3d.ts
 // draws real hardbacks in a canvas over the shelf, posed each frame from
@@ -35,6 +36,12 @@ const END_ROOM = 28;
 const SPINE_PX_PER_MM = 1.6;
 const MIN_SPINE = 14;
 
+// Dragging the open 3D book (mouse only) turns it, easing out towards
+// MAX_TURN so it never shows the plain back board, and springs back on release.
+const TURN_PER_PX = 0.012; // radians
+const MAX_TURN = 0.9; // about 50deg
+const DRAG_SLOP = 4; // px before a press counts as a drag, not a click
+
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 export function Bookshelf({ books }: { books: Book[] }) {
@@ -45,6 +52,9 @@ export function Bookshelf({ books }: { books: Book[] }) {
   const viewportRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bookRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const shelfRef = useRef<Shelf3D | null>(null);
+  const dragRef = useRef<{ id: number; index: number; x: number; moved: boolean } | null>(null);
+  const draggedRef = useRef(false);
 
   const sizes = useMemo(() => {
     const tallest = Math.max(...books.map((b) => b.heightMm));
@@ -152,7 +162,7 @@ export function Bookshelf({ books }: { books: Book[] }) {
           )
           .then((s) => {
             if (cancelled) s.dispose();
-            else shelf = s;
+            else shelf = shelfRef.current = s;
           })
           .catch((err: unknown) => console.error("bookshelf: 3D shelf failed, keeping the CSS one", err));
       },
@@ -163,8 +173,41 @@ export function Bookshelf({ books }: { books: Book[] }) {
       cancelled = true;
       io.disconnect();
       shelf?.dispose();
+      shelfRef.current = null;
     };
   }, [books, sizes]);
+
+  const startTurn = (e: PointerEvent<HTMLButtonElement>, i: number) => {
+    draggedRef.current = false;
+    // Mouse / pen only — touch taps pick a book and must not fight page scroll.
+    if (gl !== "3d" || i !== active || e.button !== 0 || e.pointerType === "touch") return;
+    dragRef.current = { id: e.pointerId, index: i, x: e.clientX, moved: false };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+
+  const endTurn = (e: PointerEvent<HTMLButtonElement>) => {
+    const drag = dragRef.current;
+    if (!drag || drag.id !== e.pointerId) return;
+    dragRef.current = null;
+    // The click that follows a drag shouldn't count as picking the book.
+    draggedRef.current = drag.moved;
+    shelfRef.current?.turn(drag.index, null);
+  };
+
+  const moveTurn = (e: PointerEvent<HTMLButtonElement>) => {
+    const drag = dragRef.current;
+    if (!drag || drag.id !== e.pointerId) return;
+    // Let go outside the window, the release can go missing; a move with no
+    // button held means the drag is already over.
+    if (e.pointerType === "mouse" && !(e.buttons & 1)) {
+      endTurn(e);
+      return;
+    }
+    const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) < DRAG_SLOP) return;
+    drag.moved = true;
+    shelfRef.current?.turn(drag.index, MAX_TURN * Math.tanh((dx * TURN_PER_PX) / MAX_TURN));
+  };
 
   const go = (i: number) => setActive(clamp(i, 0, books.length - 1));
 
@@ -177,6 +220,14 @@ export function Bookshelf({ books }: { books: Book[] }) {
     const next = clamp(active + (e.key === "ArrowRight" ? 1 : -1), 0, books.length - 1);
     go(next);
     if (bookRefs.current.includes(e.target as HTMLButtonElement)) bookRefs.current[next]?.focus({ preventScroll: true });
+  };
+
+  const pick = (i: number) => {
+    if (draggedRef.current) {
+      draggedRef.current = false;
+      return;
+    }
+    go(i);
   };
 
   const current = books[active];
@@ -221,7 +272,12 @@ export function Bookshelf({ books }: { books: Book[] }) {
                   tabIndex={i === active ? 0 : -1}
                   aria-label={`${b.title}${b.author ? `, ${b.author}` : ""}`}
                   style={vars}
-                  onClick={() => go(i)}
+                  onClick={() => pick(i)}
+                  onPointerDown={(e) => startTurn(e, i)}
+                  onPointerMove={moveTurn}
+                  onPointerUp={endTurn}
+                  onPointerCancel={endTurn}
+                  onLostPointerCapture={endTurn}
                 >
                   <span className={styles.spine} aria-hidden="true">
                     <span className={styles.spineTitle}>{b.title}</span>

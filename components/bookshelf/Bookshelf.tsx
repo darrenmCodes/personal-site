@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import type { Book } from "@/content";
 import { coverColour, fixedSwatch, type Swatch } from "./colour";
-import type { ShelfBook } from "./shelf3d";
+import type { Shelf3D, ShelfBook } from "./shelf3d";
 import styles from "./Bookshelf.module.css";
 
 // Ported from Darren's earlier shelf. A picked book's spine swings back

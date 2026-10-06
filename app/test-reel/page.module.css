@@ -1,0 +1,463 @@
+.page {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--space-5);
+  row-gap: var(--space-9);
+  padding: var(--space-7) var(--gutter) calc(var(--space-9) * 1.5);
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.page > * {
+  grid-column: 1 / -1;
+  position: relative;
+}
+
+.sectionLabel {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-3);
+  font-size: var(--step-3);
+  text-transform: uppercase;
+  margin-bottom: var(--space-5);
+}
+
+.sectionLabel span {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 2px 8px;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  transform: translateY(-0.4em);
+}
+
+.aside {
+  max-width: 48ch;
+  color: var(--fg-muted);
+  margin-bottom: var(--space-6);
+}
+
+.small {
+  font-size: var(--step--1);
+  color: var(--fg-muted);
+}
+
+/* Opening: slate on the left, title shoved off to the right and up. */
+
+.opening {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--space-5);
+  align-items: start;
+  padding-top: var(--space-6);
+}
+
+.slate {
+  grid-column: 1 / span 4;
+  grid-row: 1 / span 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: var(--space-7) 0 0;
+  background: var(--c-black);
+  color: #efe6d2;
+  font-family: var(--font-mono);
+  border-radius: 4px;
+  overflow: hidden;
+  rotate: -3deg;
+  box-shadow: var(--shadow-object);
+}
+
+.slate::before {
+  content: "";
+  grid-column: 1 / -1;
+  height: 18px;
+  background: repeating-linear-gradient(
+    -55deg,
+    #efe6d2 0 14px,
+    var(--c-black) 14px 28px
+  );
+}
+
+.slate div {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid rgb(239 230 210 / 0.35);
+}
+
+.slate div:nth-child(odd) {
+  border-right: 1px solid rgb(239 230 210 / 0.35);
+}
+
+.slate dt {
+  font-size: var(--step--2);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.slate dd {
+  margin: 0;
+  font-size: var(--step-1);
+  font-family: var(--font-hand);
+  line-height: 1.1;
+}
+
+.title {
+  grid-column: 6 / -1;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--step-poster);
+  line-height: 0.84;
+  letter-spacing: -0.01em;
+  color: var(--c-coral);
+  -webkit-text-stroke: 0.012em var(--fg);
+  paint-order: stroke fill;
+  text-transform: none;
+}
+
+.lede {
+  grid-column: 7 / span 5;
+  margin-top: var(--space-6);
+  font-size: var(--step-1);
+  line-height: 1.35;
+  max-width: 34ch;
+}
+
+.noteTake {
+  right: 0;
+  top: 0;
+}
+
+/* Stock chart: a lab card, not a swatch grid. */
+
+.stockSection {
+  grid-column: 2 / span 10 !important;
+}
+
+.chart {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-5);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4) var(--space-3);
+  background: var(--bg-raised);
+  border: 1.5px solid var(--rule);
+  border-radius: 2px;
+}
+
+.chip {
+  flex: 1 1 130px;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--space-3);
+  color: var(--c-ink);
+  border-radius: 2px 2px 10px 2px;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.12), 0 6px 12px -8px rgb(42 33 27 / 0.6);
+}
+
+.chip:nth-child(6) {
+  color: var(--c-cream);
+}
+
+.chipName {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--step-2);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.chipNote {
+  font-family: var(--font-hand);
+  font-size: var(--step-1);
+  line-height: 1;
+}
+
+.accents {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  margin: var(--space-4) 0 0 auto;
+  width: fit-content;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.accentsLabel {
+  color: var(--fg-muted);
+}
+
+.accents ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--space-4);
+}
+
+.accents li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.2);
+}
+
+.noteStock {
+  left: 2%;
+  bottom: -4.5rem;
+}
+
+/* Type specimen */
+
+.typeSection {
+  grid-column: 1 / span 11 !important;
+}
+
+.specimen {
+  display: grid;
+  border-top: 2px solid var(--fg);
+}
+
+.specimenRow {
+  display: grid;
+  grid-template-columns: minmax(200px, 3fr) 9fr;
+  gap: var(--space-5);
+  align-items: center;
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.specimenMeta {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.specimenRole {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--fg-muted);
+}
+
+.specimenFace {
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+}
+
+.sampleDisplay {
+  font-family: var(--font-display);
+  font-size: var(--step-4);
+  line-height: 0.95;
+  text-shadow: var(--halation-text);
+}
+
+.sampleHeading {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: var(--step-3);
+  text-transform: uppercase;
+  line-height: 0.95;
+  text-shadow: var(--halation-text);
+}
+
+.sampleBody {
+  font-family: var(--font-body);
+  font-size: var(--step-1);
+  line-height: 1.45;
+  max-width: 52ch;
+}
+
+.sampleMono {
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.sampleHand {
+  font-family: var(--font-hand);
+  font-size: var(--step-3);
+  line-height: 1;
+  color: var(--scribble);
+  rotate: -2deg;
+}
+
+/* Photo treatment: image left and low, copy up and right. */
+
+.photoSection {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--space-5);
+  align-items: end;
+}
+
+.photo {
+  grid-column: 2 / span 5;
+  rotate: 1.5deg;
+}
+
+.photoCopy {
+  grid-column: 8 / span 4;
+  display: grid;
+  gap: var(--space-4);
+  padding-bottom: var(--space-8);
+  max-width: 40ch;
+}
+
+.photoCopy .sectionLabel {
+  margin-bottom: 0;
+}
+
+.notePhoto {
+  left: 1%;
+  top: -2.5rem;
+}
+
+/* Contrast lab */
+
+.contrastSection {
+  grid-column: 4 / span 8 !important;
+}
+
+.contrast {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+
+.contrast th,
+.contrast td {
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+}
+
+.contrast thead th {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: var(--step--2);
+  color: var(--fg-muted);
+  border-bottom: 2px solid var(--fg);
+}
+
+.contrast tbody th {
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.contrastChip {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 26px;
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  box-shadow: inset 0 0 0 1px var(--rule);
+}
+
+.contrast td[data-pass="true"] {
+  font-weight: 700;
+}
+
+.contrast td[data-pass="false"] {
+  font-weight: 700;
+  color: var(--focus);
+}
+
+.tail {
+  grid-column: 7 / -1 !important;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: var(--step--1);
+  border-top: 2px solid var(--fg);
+  padding-top: var(--space-3);
+  display: flex;
+  justify-content: space-between;
+}
+
+.tailNext {
+  color: var(--fg-muted);
+}
+
+/* Narrow screens: keep the edit, lose the columns. */
+
+@media (max-width: 760px) {
+  .page {
+    row-gap: var(--space-8);
+    padding-top: var(--space-5);
+  }
+
+  .opening,
+  .photoSection {
+    grid-template-columns: 1fr;
+    row-gap: var(--space-5);
+  }
+
+  .slate,
+  .title,
+  .lede,
+  .photo,
+  .photoCopy {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .slate {
+    width: min(100%, 300px);
+    margin-top: 0;
+    rotate: -2deg;
+  }
+
+  .title {
+    order: -1;
+  }
+
+  .photoCopy {
+    padding-bottom: 0;
+  }
+
+  .stockSection,
+  .typeSection,
+  .contrastSection,
+  .tail {
+    grid-column: 1 / -1 !important;
+  }
+
+  .specimenRow {
+    grid-template-columns: 1fr;
+  }
+
+  .accents {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-2);
+    margin-left: 0;
+  }
+
+  .contrast tbody th {
+    gap: var(--space-2);
+  }
+
+  .tail {
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+}

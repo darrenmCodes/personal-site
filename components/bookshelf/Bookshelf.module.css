@@ -19,13 +19,13 @@
 /* Registered so the fades can transition in step with the shelf sliding. */
 @property --fade-left {
   syntax: "<length>";
-  inherits: false;
+  inherits: true;
   initial-value: 0px;
 }
 
 @property --fade-right {
   syntax: "<length>";
-  inherits: false;
+  inherits: true;
   initial-value: 0px;
 }
 

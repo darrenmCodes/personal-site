@@ -29,6 +29,10 @@ const GAP = 4;
 // against the edge, since the shelf can't slide further) got its cover
 // squashed and clipped against the edge mid-turn.
 const END_ROOM = 28;
+// Tall books fill HEIGHT; drag-turn pulls parts toward the camera and
+// perspective scales them past the box. Padding on the shelf holds that
+// paint; a matching negative margin keeps the gap to the label and caption.
+const VERT_ROOM = 72;
 
 // Spines are drawn about 1.6x thicker than true scale against the height,
 // enough to fit a title on the thinnest one while keeping every book in
@@ -154,6 +158,7 @@ export function Bookshelf({ books }: { books: Book[] }) {
               canvas,
               viewport,
               books: input,
+              vertRoom: VERT_ROOM,
               onReady: () => {
                 if (!cancelled) setGl("3d");
               },
@@ -233,7 +238,7 @@ export function Bookshelf({ books }: { books: Book[] }) {
   const current = books[active];
 
   return (
-    <div className={styles.shelf} data-gl={gl} onKeyDown={onKey}>
+    <div className={styles.shelf} data-gl={gl} onKeyDown={onKey} style={{ "--vert-room": `${VERT_ROOM}px` } as CSSProperties}>
       <div className={styles.frame} data-fade-left={fadeLeft} data-fade-right={fadeRight}>
         <div
           ref={viewportRef}

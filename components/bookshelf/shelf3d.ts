@@ -69,6 +69,8 @@ interface Options {
   canvas: HTMLCanvasElement;
   viewport: HTMLElement;
   books: ShelfBook[];
+  /** Extra canvas px above and below the viewport so drag-turns aren't clipped. */
+  vertRoom?: number;
   onReady: () => void;
   onLost: () => void;
 }
@@ -228,7 +230,7 @@ function paintSpine(canvas: HTMLCanvasElement, book: ShelfBook, tone: string, in
   ctx.fillText(text, 0, 0);
 }
 
-export async function mountShelf3D({ canvas, viewport, books, onReady, onLost }: Options) {
+export async function mountShelf3D({ canvas, viewport, books, vertRoom = 0, onReady, onLost }: Options) {
   // failIfMajorPerformanceCaveat: with no GPU (acceleration off, or the GPU
   // blocklisted) WebGL falls back to software and the turn stutters. Refusing
   // the context there keeps the CSS shelf, which stays smooth.
@@ -353,7 +355,9 @@ export async function mountShelf3D({ canvas, viewport, books, onReady, onLost }:
       if (Math.abs(turnYaw) < 1e-4) turnYaw = 0;
     }
     const w = viewport.clientWidth;
-    const h = viewport.clientHeight;
+    // Canvas is taller than the viewport by vertRoom above and below; book
+    // tops are shifted down so they still line up with the CSS boxes.
+    const h = viewport.clientHeight + 2 * vertRoom;
     if (w !== width || h !== height) {
       width = w;
       height = h;
@@ -380,7 +384,7 @@ export async function mountShelf3D({ canvas, viewport, books, onReady, onLost }:
       }
       return {
         left: r.left - vp.left,
-        top: r.top - vp.top,
+        top: r.top - vp.top + vertRoom,
         w: r.width,
         h: r.height,
         angle: Math.atan2(-m.m13, m.m11),

@@ -9,6 +9,11 @@
    slide, this peaks at about 8.5px. Longer durations felt sluggish. */
 .shelf {
   --turn: 500ms cubic-bezier(0.37, 0, 0.63, 1);
+  /* Room for a turned 3D book to paint above/below the 220px row, without
+     changing the gap to the label or caption (negative margin cancels it). */
+  padding-block: var(--vert-room, 0px);
+  margin-block: calc(-1 * var(--vert-room, 0px));
+  overflow: visible;
 }
 
 /* Registered so the fades can transition in step with the shelf sliding. */
@@ -25,18 +30,13 @@
 }
 
 /* Books running past either edge fade out rather than being cut through.
-   On the frame, so the 3D canvas fades with the flat shelf. */
+   Fade lives on the viewport and canvas (not the frame) so the 3D canvas
+   can paint above/below the shelf without taking layout space. */
 .frame {
   position: relative;
+  overflow: visible;
   --fade-left: 0px;
   --fade-right: 0px;
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    #000 var(--fade-left),
-    #000 calc(100% - var(--fade-right)),
-    transparent
-  );
   transition:
     --fade-left var(--turn),
     --fade-right var(--turn);
@@ -48,6 +48,17 @@
 
 .frame[data-fade-right="true"] {
   --fade-right: 40px;
+}
+
+.viewport,
+.gl {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade-left),
+    #000 calc(100% - var(--fade-right)),
+    transparent
+  );
 }
 
 .viewport {
@@ -161,16 +172,18 @@
   outline: none;
 }
 
-/* The 3D books (shelf3d.ts). Same box as the viewport, so it clips the same.
-   Once it has drawn, the flat spines and covers go invisible but keep
-   running their transitions, which is what poses the 3D books. */
+/* The 3D books (shelf3d.ts). Taller than the viewport by --vert-room above
+   and below so a turned book isn’t clipped; layout still follows the
+   viewport. Once it has drawn, the flat spines and covers go invisible but
+   keep running their transitions, which is what poses the 3D books. */
 .gl {
   position: absolute;
-  top: 0;
+  top: calc(-1 * var(--vert-room, 0px));
   left: 0;
   z-index: 1;
   /* A canvas is 300px wide until three.js sizes it, which on a 320px phone
      sticks out past the screen and widens the whole page. */
+  width: 100%;
   max-width: 100%;
   pointer-events: none;
 }

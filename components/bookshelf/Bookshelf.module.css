@@ -52,8 +52,6 @@
 
 .viewport {
   overflow: hidden;
-  /* Up-and-down stays the page's; sideways finger moves come to the shelf. */
-  touch-action: pan-y;
 }
 
 .track {
@@ -62,11 +60,6 @@
   height: 100%;
   transition: transform var(--turn);
   will-change: transform;
-}
-
-/* Mid-swipe the track sits exactly under the finger. */
-.track[data-swiping="true"] {
-  transition: none;
 }
 
 .book {
@@ -185,18 +178,6 @@
 .shelf[data-gl="3d"] .spine,
 .shelf[data-gl="3d"] .cover {
   opacity: 0;
-}
-
-/* The open 3D book can be dragged round. Vertical swipes still scroll the
-   page on a phone; only sideways ones turn the book. */
-.shelf[data-gl="3d"] .book[data-open="true"] {
-  cursor: grab;
-  touch-action: pan-y;
-  user-select: none;
-}
-
-.shelf[data-gl="3d"] .book[data-open="true"]:active {
-  cursor: grabbing;
 }
 
 .below {

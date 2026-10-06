@@ -1,16 +1,16 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type PointerEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import type { Book } from "@/content";
 import { coverColour, fixedSwatch, type Swatch } from "./colour";
-import type { Shelf3D, ShelfBook } from "./shelf3d";
+import type { ShelfBook } from "./shelf3d";
 import styles from "./Bookshelf.module.css";
 
 // Ported from Darren's earlier shelf. A picked book's spine swings back
 // 60deg and its cover opens out at 30deg; the rest stand spine-out.
 // The shelf never scrolls on its own terms: it always slides to centre the
 // open book, so moving along it means opening another one. Click a spine,
-// use the ‹ › buttons or the arrow keys, or on a phone swipe one book along.
+// use the ‹ › buttons, or the arrow keys.
 //
 // All of that is still CSS. Once three.js and the model load, shelf3d.ts
 // draws real hardbacks in a canvas over the shelf, posed each frame from
@@ -35,46 +35,16 @@ const END_ROOM = 28;
 const SPINE_PX_PER_MM = 1.6;
 const MIN_SPINE = 14;
 
-// Dragging the open 3D book turns it, easing out towards MAX_TURN so it
-// never shows the plain back board, and springs back on release.
-const TURN_PER_PX = 0.012; // radians
-const MAX_TURN = 0.9; // about 50deg
-const DRAG_SLOP = 4; // px before a press counts as a drag, not a click
-
-// Swiping: a finger has to travel SWIPE_SLOP before it's a swipe rather than
-// a tap. Mid-swipe the shelf follows the finger; let go past SWIPE_STEP, or
-// flicked faster than SWIPE_FLICK, and it opens the next book that way,
-// otherwise it springs back. With no book that way it moves at RUBBER of the
-// finger's pace.
-const SWIPE_SLOP = 8;
-const SWIPE_STEP = 40; // px
-const SWIPE_FLICK = 0.3; // px per ms
-const RUBBER = 0.35;
-
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
 export function Bookshelf({ books }: { books: Book[] }) {
   const [active, setActive] = useState(0);
   const [swatches, setSwatches] = useState<(Swatch | null)[] | null>(null);
   const [viewportWidth, setViewportWidth] = useState<number | null>(null);
-  // How far a finger has dragged the shelf off centre, or null when it isn't.
-  // Mid-swipe the track follows it exactly, with no transition.
-  const [swipeOffset, setSwipeOffset] = useState<number | null>(null);
   const [gl, setGl] = useState<"css" | "3d">("css");
   const viewportRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const bookRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const shelfRef = useRef<Shelf3D | null>(null);
-  const dragRef = useRef<{ id: number; index: number; x: number; moved: boolean } | null>(null);
-  const draggedRef = useRef(false);
-  const swipeRef = useRef<{
-    id: number;
-    startX: number;
-    lastX: number;
-    lastT: number;
-    v: number;
-    moved: boolean;
-  } | null>(null);
 
   const sizes = useMemo(() => {
     const tallest = Math.max(...books.map((b) => b.heightMm));
@@ -98,8 +68,7 @@ export function Bookshelf({ books }: { books: Book[] }) {
   const vw = viewportWidth ?? Infinity;
   const maxScroll = Math.max(0, spinesWidth + sizes[active].cover + END_ROOM - vw);
   const centred = offsets[active] - (vw - (sizes[active].spine + sizes[active].cover)) / 2;
-  const settled = clamp(Number.isFinite(centred) ? centred : 0, 0, maxScroll);
-  const scroll = settled + (swipeOffset ?? 0);
+  const scroll = clamp(Number.isFinite(centred) ? centred : 0, 0, maxScroll);
   // Fade whichever edge has books running past it.
   const fadeLeft = scroll > 0.5;
   const fadeRight = scroll < maxScroll - 0.5;
@@ -183,7 +152,7 @@ export function Bookshelf({ books }: { books: Book[] }) {
           )
           .then((s) => {
             if (cancelled) s.dispose();
-            else shelf = shelfRef.current = s;
+            else shelf = s;
           })
           .catch((err: unknown) => console.error("bookshelf: 3D shelf failed, keeping the CSS one", err));
       },
@@ -194,78 +163,8 @@ export function Bookshelf({ books }: { books: Book[] }) {
       cancelled = true;
       io.disconnect();
       shelf?.dispose();
-      shelfRef.current = null;
     };
   }, [books, sizes]);
-
-  const startTurn = (e: PointerEvent<HTMLButtonElement>, i: number) => {
-    draggedRef.current = false;
-    // On touch a sideways drag scrolls the shelf instead (see startSwipe).
-    if (gl !== "3d" || i !== active || e.button !== 0 || e.pointerType === "touch") return;
-    dragRef.current = { id: e.pointerId, index: i, x: e.clientX, moved: false };
-    e.currentTarget.setPointerCapture(e.pointerId);
-  };
-
-  const endTurn = (e: PointerEvent<HTMLButtonElement>) => {
-    const drag = dragRef.current;
-    if (!drag || drag.id !== e.pointerId) return;
-    dragRef.current = null;
-    // The click that follows a drag shouldn't count as picking the book.
-    draggedRef.current = drag.moved;
-    shelfRef.current?.turn(drag.index, null);
-  };
-
-  const moveTurn = (e: PointerEvent<HTMLButtonElement>) => {
-    const drag = dragRef.current;
-    if (!drag || drag.id !== e.pointerId) return;
-    // Let go outside the window, the release can go missing; a move with no
-    // button held means the drag is already over.
-    if (e.pointerType === "mouse" && !(e.buttons & 1)) {
-      endTurn(e);
-      return;
-    }
-    const dx = e.clientX - drag.x;
-    if (!drag.moved && Math.abs(dx) < DRAG_SLOP) return;
-    drag.moved = true;
-    shelfRef.current?.turn(drag.index, MAX_TURN * Math.tanh((dx * TURN_PER_PX) / MAX_TURN));
-  };
-
-  const startSwipe = (e: PointerEvent<HTMLDivElement>) => {
-    if (e.pointerType !== "touch" || books.length < 2 || swipeRef.current) return;
-    swipeRef.current = { id: e.pointerId, startX: e.clientX, lastX: e.clientX, lastT: e.timeStamp, v: 0, moved: false };
-  };
-
-  const moveSwipe = (e: PointerEvent<HTMLDivElement>) => {
-    const sw = swipeRef.current;
-    if (!sw || sw.id !== e.pointerId) return;
-    const dx = e.clientX - sw.startX;
-    if (!sw.moved) {
-      if (Math.abs(dx) < SWIPE_SLOP) return;
-      sw.moved = true;
-    }
-    const dt = e.timeStamp - sw.lastT;
-    if (dt > 0) sw.v = 0.8 * ((e.clientX - sw.lastX) / dt) + 0.2 * sw.v;
-    sw.lastX = e.clientX;
-    sw.lastT = e.timeStamp;
-    // Dragging left brings the next book in, so the shelf moves the other way.
-    const canGo = dx < 0 ? hasNext : hasPrev;
-    setSwipeOffset(-dx * (canGo ? 1 : RUBBER));
-  };
-
-  const endSwipe = (e: PointerEvent<HTMLDivElement>) => {
-    const sw = swipeRef.current;
-    if (!sw || sw.id !== e.pointerId) return;
-    swipeRef.current = null;
-    if (!sw.moved) return;
-    // The tap that ends a swipe shouldn't pick whatever book it landed on.
-    draggedRef.current = true;
-    setSwipeOffset(null);
-    const dx = sw.lastX - sw.startX;
-    // A finger that stopped before lifting isn't a flick.
-    const flick = e.timeStamp - sw.lastT > 80 ? 0 : sw.v;
-    if (Math.abs(dx) < SWIPE_STEP && Math.abs(flick) < SWIPE_FLICK) return;
-    go(active + (dx < 0 ? 1 : -1));
-  };
 
   const go = (i: number) => setActive(clamp(i, 0, books.length - 1));
 
@@ -280,14 +179,6 @@ export function Bookshelf({ books }: { books: Book[] }) {
     if (bookRefs.current.includes(e.target as HTMLButtonElement)) bookRefs.current[next]?.focus({ preventScroll: true });
   };
 
-  const pick = (i: number) => {
-    if (draggedRef.current) {
-      draggedRef.current = false;
-      return;
-    }
-    go(i);
-  };
-
   const current = books[active];
 
   return (
@@ -297,21 +188,13 @@ export function Bookshelf({ books }: { books: Book[] }) {
           ref={viewportRef}
           className={styles.viewport}
           style={{ height: HEIGHT }}
-          onPointerDown={startSwipe}
-          onPointerMove={moveSwipe}
-          onPointerUp={endSwipe}
-          onPointerCancel={endSwipe}
           // Tabbing to a book hidden past the edge makes the browser scroll
           // this box natively, which would fight the transform. Undo it.
           onScroll={(e) => {
             e.currentTarget.scrollLeft = 0;
           }}
         >
-          <div
-            className={styles.track}
-            data-swiping={swipeOffset !== null}
-            style={{ transform: `translate3d(${-scroll}px, 0, 0)`, gap: GAP }}
-          >
+          <div className={styles.track} style={{ transform: `translate3d(${-scroll}px, 0, 0)`, gap: GAP }}>
             {books.map((b, i) => {
               const s = sizes[i];
               const swatch = b.spine ? fixedSwatch(b.spine) : swatches?.[i];
@@ -338,12 +221,7 @@ export function Bookshelf({ books }: { books: Book[] }) {
                   tabIndex={i === active ? 0 : -1}
                   aria-label={`${b.title}${b.author ? `, ${b.author}` : ""}`}
                   style={vars}
-                  onClick={() => pick(i)}
-                  onPointerDown={(e) => startTurn(e, i)}
-                  onPointerMove={moveTurn}
-                  onPointerUp={endTurn}
-                  onPointerCancel={endTurn}
-                  onLostPointerCapture={endTurn}
+                  onClick={() => go(i)}
                 >
                   <span className={styles.spine} aria-hidden="true">
                     <span className={styles.spineTitle}>{b.title}</span>

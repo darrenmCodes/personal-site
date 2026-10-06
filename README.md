@@ -33,4 +33,4 @@ pnpm books
 
 ## stack
 
-next.js, react, three.js for the shelf. locally only for now — no deploy wired up yet.
+next.js, react, three.js for the shelf.

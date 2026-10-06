@@ -1,0 +1,35 @@
+.notes {
+  display: none;
+}
+
+@media print {
+  .notes {
+    display: grid;
+    gap: 0.5rem;
+    break-before: avoid;
+  }
+
+  .label {
+    font-size: var(--label);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+    color: var(--ink-muted);
+  }
+
+  .list {
+    display: grid;
+    gap: 0.2rem;
+    font-size: 8.5pt;
+    color: var(--ink-muted);
+    /* Addresses keep their own case; the page's lowercase would change them. */
+    text-transform: none;
+  }
+
+  /* Number in its own column, so a long address wraps under itself. */
+  .list li {
+    display: grid;
+    grid-template-columns: 1.75em minmax(0, 1fr);
+    overflow-wrap: anywhere;
+    break-inside: avoid;
+  }
+}

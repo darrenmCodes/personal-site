@@ -1,0 +1,25 @@
+/* No reserved height: the footer starts below the fold, and only the
+   colophon sits after it, so the quote arriving can't shift anything. */
+.quote {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+}
+
+/* Plain text in quote marks, not italics: two text styles, page-wide. */
+.quote blockquote {
+  margin: 0;
+  max-width: 30rem;
+}
+
+.quote figcaption {
+  font-family: var(--serif);
+  font-size: var(--label);
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+.quote cite {
+  font-style: normal;
+}

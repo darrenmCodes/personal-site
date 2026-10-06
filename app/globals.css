@@ -1,4 +1,27 @@
-@import "../styles/tokens.css";
+:root {
+  /* Paper and ink */
+  --paper: #f4ecdc;
+  --ink: #2b231d;
+  --ink-muted: #6b5d50;
+  --rule: rgb(43 35 29 / 0.14);
+
+  /* Accent: links only. -ink is dark enough to carry text at AA on paper;
+     the plain one is for lines and marks. */
+  --sky: #8fb2c4;
+  --sky-ink: #3f6f86;
+
+  --serif: var(--font-serif), Georgia, "Times New Roman", serif;
+
+  --text: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
+  --small: 0.8125rem;
+  --label: 0.9375rem;
+  --name: clamp(2.25rem, 1.7rem + 2.2vw, 3.25rem);
+
+  --measure: 33rem;
+  --gap: clamp(3rem, 2.25rem + 3vw, 4.5rem);
+
+  color-scheme: light;
+}
 
 *,
 *::before,
@@ -9,129 +32,125 @@
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  background: var(--bg);
 }
 
 body {
   margin: 0;
-  min-height: 100dvh;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-body);
-  font-size: var(--step-0);
-  line-height: var(--leading-body);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: var(--text);
+  line-height: 1.6;
   font-kerning: normal;
+  font-variant-numeric: oldstyle-nums proportional-nums;
+  /* No single word stranded on the last line of a paragraph. */
+  text-wrap: pretty;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  overflow-x: clip;
-}
-
-img,
-svg,
-video,
-canvas {
-  display: block;
-  max-width: 100%;
-}
-
-button,
-input,
-select,
-textarea {
-  font: inherit;
-  color: inherit;
-}
-
-button {
-  cursor: pointer;
+  /* Everything is lowercase. Done here so content files keep proper case
+     (book titles, quotes) and screen readers still get real names. */
+  text-transform: lowercase;
 }
 
 h1,
 h2,
-h3,
-h4 {
+p,
+ul,
+ol,
+dl,
+dd,
+blockquote,
+figure {
   margin: 0;
-  font-family: var(--font-heading);
-  font-weight: 800;
-  line-height: var(--leading-tight);
-  letter-spacing: -0.01em;
-  text-shadow: var(--halation-text);
+  padding: 0;
 }
 
-p {
-  margin: 0;
+ul,
+ol {
+  list-style: none;
+}
+
+/* Browsers reset case and font on form controls; the page's lowercase
+   should reach buttons too. */
+button {
+  font: inherit;
+  text-transform: inherit;
 }
 
 a {
   color: inherit;
-  text-decoration-thickness: 0.08em;
-  text-underline-offset: 0.18em;
+  text-decoration-line: underline;
+  text-decoration-color: var(--sky);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+:focus-visible {
+  outline: 2px solid var(--sky-ink);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
 ::selection {
-  background: var(--selection);
-  color: var(--fg);
+  background: rgb(143 178 196 / 0.4);
 }
 
-/* Focus looks like someone ringed it with a chinagraph pencil. */
-:focus-visible {
-  outline: 2.5px dashed var(--focus);
-  outline-offset: 3px;
-  border-radius: 3px;
-}
-
+/* Read by screen readers, invisible on screen. */
 .visually-hidden {
-  position: absolute !important;
+  position: absolute;
   width: 1px;
   height: 1px;
-  padding: 0;
   margin: -1px;
+  padding: 0;
   overflow: hidden;
   clip: rect(0 0 0 0);
   white-space: nowrap;
   border: 0;
 }
 
-.skip-link {
-  position: fixed;
-  top: var(--space-3);
-  left: var(--space-3);
-  z-index: calc(var(--z-chrome) + 1);
-  padding: var(--space-2) var(--space-4);
-  background: var(--c-yellow);
-  color: var(--c-black);
-  font-family: var(--font-mono);
-  font-size: var(--step--1);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  transform: translateY(-200%);
-}
+/* Printed, the page is a plain typeset sheet: paper margins, no link
+   underlines, a footnote number on each external link (components/
+   PrintNotes.tsx lists the addresses), and no entry split across pages. */
+@media print {
+  @page {
+    margin: 20mm 22mm;
+  }
 
-.skip-link:focus-visible {
-  transform: none;
-}
+  :root {
+    --text: 11pt;
+    --label: 9pt;
+    --name: 24pt;
+    --gap: 1.75rem;
+  }
 
-/* The page content. lib/film drives a tiny gate weave on this element, so
-   anything position: fixed must live outside it. */
-.reel {
-  position: relative;
-  z-index: var(--z-reel);
-  will-change: transform;
-}
+  body {
+    background: none;
+  }
 
-:root[data-motion="off"] *,
-:root[data-motion="off"] *::before,
-:root[data-motion="off"] *::after {
-  animation-play-state: paused !important;
-}
+  a {
+    text-decoration: none;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  a[data-note]::after {
+    content: attr(data-note);
+    margin-left: 0.1em;
+    font-size: 0.62em;
+    line-height: 0;
+    vertical-align: super;
+    color: var(--ink-muted);
+  }
+
+  p,
+  li,
+  figure {
+    break-inside: avoid;
+  }
+
+  h2 {
+    break-after: avoid;
+  }
+
+  nextjs-portal {
+    display: none;
   }
 }

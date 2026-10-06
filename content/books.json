@@ -1,0 +1,145 @@
+{
+  "shoe-dog": {
+    "pages": 386,
+    "heightMm": 229,
+    "cover": "/covers/shoe-dog.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 331
+    },
+    "sources": [
+      "https://openlibrary.org/books/OL34011401M"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "on-the-shortness-of-life": {
+    "pages": 112,
+    "heightMm": null,
+    "cover": "/covers/on-the-shortness-of-life.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 306
+    },
+    "sources": [
+      "https://openlibrary.org/books/OL7358557M"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "the-making-of-prince-of-persia": {
+    "pages": 336,
+    "heightMm": null,
+    "cover": "/covers/the-making-of-prince-of-persia.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 338
+    },
+    "sources": [
+      "https://openlibrary.org/books/OL32553687M"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "the-odyssey": {
+    "pages": 352,
+    "heightMm": null,
+    "cover": "/covers/the-odyssey.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 289
+    },
+    "sources": [
+      "https://openlibrary.org/works/OL26446888W"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "dubliners": {
+    "pages": 278,
+    "heightMm": null,
+    "cover": "/covers/dubliners.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 309
+    },
+    "sources": [
+      "https://openlibrary.org/books/OL14005342M"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "nineteen-eighty-four": {
+    "pages": 384,
+    "heightMm": 198,
+    "cover": "/covers/nineteen-eighty-four.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 324
+    },
+    "sources": [
+      "https://openlibrary.org/books/OL7359256M"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "the-bell-jar": {
+    "pages": 258,
+    "heightMm": null,
+    "cover": "/covers/the-bell-jar.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 312
+    },
+    "sources": [
+      "https://openlibrary.org/books/OL21389163M"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "zero-to-one": {
+    "pages": 224,
+    "heightMm": null,
+    "cover": "/covers/zero-to-one.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 333
+    },
+    "sources": [
+      "https://openlibrary.org/books/OL25648567M"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "the-big-short": {
+    "pages": 291,
+    "heightMm": null,
+    "cover": "/covers/the-big-short.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 332
+    },
+    "sources": [
+      "https://openlibrary.org/works/OL15118378W"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "normal-people": {
+    "pages": 288,
+    "heightMm": null,
+    "cover": "/covers/normal-people.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 325
+    },
+    "sources": [
+      "https://openlibrary.org/books/OL27330017M"
+    ],
+    "fetched": "2026-10-06"
+  },
+  "chip-war": {
+    "pages": 464,
+    "heightMm": null,
+    "cover": "/covers/chip-war.webp",
+    "coverPx": {
+      "height": 500,
+      "width": 326
+    },
+    "sources": [
+      "https://openlibrary.org/books/OL46060500M"
+    ],
+    "fetched": "2026-10-06"
+  }
+}

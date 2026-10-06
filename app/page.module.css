@@ -1,0 +1,134 @@
+/* One text column, set left of centre. Every gap on the page is one of
+   three sizes: --gap between sections, --inner between a label and what it
+   labels, --line between lines inside a section. */
+
+.page {
+  --inner: 0.75rem;
+  --line: 0.45rem;
+
+  display: grid;
+  /* minmax(0, 1fr) so wide content (the shelf's track) can't stretch the
+     column; it clips inside its own viewport instead. */
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: var(--gap);
+  /* content-box so the measure is the text width, not text plus padding. */
+  box-sizing: content-box;
+  max-width: var(--measure);
+  padding: clamp(4rem, 15vh, 9rem) 1.5rem 5rem clamp(1.5rem, 14vw, 13rem);
+}
+
+.header {
+  display: grid;
+  gap: var(--inner);
+}
+
+.name {
+  /* The one exception to the lowercase rule. */
+  text-transform: none;
+  font-size: var(--name);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.012em;
+}
+
+.lines {
+  display: grid;
+  gap: var(--line);
+}
+
+/* The bio is running prose, not a list, so its paragraphs sit further apart. */
+.bio {
+  gap: 1rem;
+}
+
+/* "so far": the name in ink, then its description in muted ink on the same
+   line. The one place body text goes grey: one style for both made names
+   and descriptions run together. */
+.entries {
+  display: grid;
+  gap: var(--inner);
+}
+
+.entryName {
+  margin-right: 0.3em;
+  /* Keep a name whole ("patch '25", "new frontiers phase 2") so a narrow
+     screen never strands half of it on the next line. */
+  white-space: nowrap;
+}
+
+.entryText {
+  color: var(--ink-muted);
+}
+
+.section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--inner);
+}
+
+/* The second text style: labels and small notes, in the same serif as
+   everything else, smaller and grey. */
+.label,
+.note {
+  font-family: var(--serif);
+  font-size: var(--label);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+.links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--line) 1.5rem;
+}
+
+.footer {
+  display: grid;
+  gap: var(--inner);
+}
+
+/* Footnotes: superior figures from the font's own sups feature, not
+   shrunken raised digits. */
+.noteRef,
+.noteBack {
+  font-variant-position: super;
+  text-decoration: none;
+  color: var(--ink-muted);
+}
+
+.noteRef {
+  margin-left: 0.05em;
+}
+
+.noteRef:hover,
+.noteBack:hover {
+  color: var(--ink);
+}
+
+.notes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--label);
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+
+/* A faint hairline in the ink's own colour, so the footer is set apart
+   without anything standing out. Footnotes sit above it, quote below. */
+.rule {
+  width: 100%;
+  height: 1px;
+  margin: var(--inner) 0;
+  border: 0;
+  background: var(--rule);
+}
+
+@media print {
+  .page {
+    max-width: none;
+    padding: 0;
+  }
+}

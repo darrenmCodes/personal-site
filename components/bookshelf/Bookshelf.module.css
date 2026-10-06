@@ -1,0 +1,282 @@
+/* Ported from Darren's earlier shelf. Each book is a spine and a cover side
+   by side; closed, the cover is folded almost flat away from you (88.8deg)
+   so only the spine shows. Open, the spine swings back and the cover opens
+   out, and the book's slot widens to fit both. */
+
+/* Same 500ms as the original shelf, on a sine ease-in-out instead of
+   `ease`. At 60 fps a fast-moving 3D book jumps far enough between frames
+   to read as stutter; `ease` peaked at about 12px a frame on a typical
+   slide, this peaks at about 8.5px. Longer durations felt sluggish. */
+.shelf {
+  --turn: 500ms cubic-bezier(0.37, 0, 0.63, 1);
+}
+
+/* Registered so the fades can transition in step with the shelf sliding. */
+@property --fade-left {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-right {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+/* Books running past either edge fade out rather than being cut through.
+   On the frame, so the 3D canvas fades with the flat shelf. */
+.frame {
+  position: relative;
+  --fade-left: 0px;
+  --fade-right: 0px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 var(--fade-left),
+    #000 calc(100% - var(--fade-right)),
+    transparent
+  );
+  transition:
+    --fade-left var(--turn),
+    --fade-right var(--turn);
+}
+
+.frame[data-fade-left="true"] {
+  --fade-left: 40px;
+}
+
+.frame[data-fade-right="true"] {
+  --fade-right: 40px;
+}
+
+.viewport {
+  overflow: hidden;
+  /* Up-and-down stays the page's; sideways finger moves come to the shelf. */
+  touch-action: pan-y;
+}
+
+.track {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+  transition: transform var(--turn);
+  will-change: transform;
+}
+
+/* Mid-swipe the track sits exactly under the finger. */
+.track[data-swiping="true"] {
+  transition: none;
+}
+
+.book {
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+  width: var(--spine);
+  height: var(--h);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  perspective: 1000px;
+  transition: width var(--turn);
+}
+
+.book[data-open="true"] {
+  width: calc(var(--spine) + var(--cover));
+}
+
+.spine,
+.cover {
+  flex-shrink: 0;
+  height: var(--h);
+  transform-style: preserve-3d;
+  transition: transform var(--turn);
+}
+
+.spine {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: var(--spine);
+  background: var(--tone);
+  color: var(--tone-text);
+  transform-origin: right;
+}
+
+.book[data-open="true"] .spine {
+  transform: rotateY(-60deg);
+}
+
+/* British spines read top to bottom. */
+.spineTitle {
+  margin-top: 12px;
+  max-height: calc(var(--h) - 24px);
+  writing-mode: vertical-rl;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: var(--spine-font);
+  user-select: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cover {
+  position: relative;
+  overflow: hidden;
+  width: var(--cover);
+  transform-origin: left;
+  transform: rotateY(88.8deg);
+}
+
+.book[data-open="true"] .cover {
+  transform: rotateY(30deg);
+}
+
+.cover img {
+  display: block;
+  width: var(--cover);
+  height: var(--h);
+  object-fit: contain;
+  background: var(--tone);
+}
+
+/* Light catching the crease where the cover meets the spine. */
+.shine {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(255 255 255 / 0) 2px,
+    rgb(255 255 255 / 0.5) 3px,
+    rgb(255 255 255 / 0.25) 4px,
+    rgb(255 255 255 / 0.25) 6px,
+    transparent 7px,
+    transparent 9px,
+    rgb(255 255 255 / 0.25) 9px,
+    transparent 12px
+  );
+}
+
+/* Only the open book takes focus (see tabIndex), and it already stands out
+   by being open, so a ring round it is just noise. */
+.book:focus-visible {
+  outline: none;
+}
+
+/* The 3D books (shelf3d.ts). Same box as the viewport, so it clips the same.
+   Once it has drawn, the flat spines and covers go invisible but keep
+   running their transitions, which is what poses the 3D books. */
+.gl {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  /* A canvas is 300px wide until three.js sizes it, which on a 320px phone
+     sticks out past the screen and widens the whole page. */
+  max-width: 100%;
+  pointer-events: none;
+}
+
+.shelf[data-gl="3d"] .spine,
+.shelf[data-gl="3d"] .cover {
+  opacity: 0;
+}
+
+/* The open 3D book can be dragged round. Vertical swipes still scroll the
+   page on a phone; only sideways ones turn the book. */
+.shelf[data-gl="3d"] .book[data-open="true"] {
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.shelf[data-gl="3d"] .book[data-open="true"]:active {
+  cursor: grabbing;
+}
+
+.below {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.caption {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav {
+  display: flex;
+  flex-shrink: 0;
+  /* Pull the glyphs' padding out so they line up with the shelf's edge. */
+  margin-right: -0.5rem;
+}
+
+/* Padded out to a fair finger target; the glyph itself stays small. */
+.step {
+  padding: 0 0.5rem;
+  border: 0;
+  background: none;
+  color: var(--ink-muted);
+  /* Brygada's guillemets are tiny at text size. */
+  font-size: 1.6rem;
+  line-height: 1;
+  padding-bottom: 0.15em;
+  cursor: pointer;
+  user-select: none;
+}
+
+.step:hover:not(:disabled) {
+  color: var(--ink);
+}
+
+.step:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+/* Same as the "so far" entries: the book in ink, the take in muted ink. */
+.captionTitle {
+  margin-right: 0.3em;
+}
+
+.captionTake {
+  color: var(--ink-muted);
+}
+
+/* Set a little apart and never split from the last word. */
+.read {
+  margin-left: 0.25em;
+  white-space: nowrap;
+}
+
+.printList {
+  display: none;
+}
+
+@media print {
+  .frame,
+  .below {
+    display: none;
+  }
+
+  .printList {
+    display: grid;
+    gap: 0.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track,
+  .book,
+  .spine,
+  .cover {
+    transition: none;
+  }
+}

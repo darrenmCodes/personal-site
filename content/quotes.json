@@ -1,0 +1,189 @@
+[
+  {
+    "text": "The man did not know the rest of my faults, for he would not have mentioned these only.",
+    "author": "Epictetus",
+    "work": "Encheiridion",
+    "locator": "33.9",
+    "translator": "George Long",
+    "year": 1877,
+    "source": "https://www.gutenberg.org/ebooks/10661",
+    "notes": "Trimmed: the sentence begins with advice on what to reply when told someone speaks ill of you.",
+    "translatorDied": 1879
+  },
+  {
+    "text": "If you would improve, submit to be considered without sense and foolish with respect to externals.",
+    "author": "Epictetus",
+    "work": "Encheiridion",
+    "locator": "13",
+    "translator": "George Long",
+    "year": 1877,
+    "source": "https://www.gutenberg.org/ebooks/10661",
+    "notes": "The real wording behind the modern 'be content to be thought foolish and stupid'.",
+    "translatorDied": 1879
+  },
+  {
+    "text": "I must die. Must I then die lamenting?",
+    "author": "Epictetus",
+    "work": "Discourses",
+    "locator": "1.1",
+    "translator": "George Long",
+    "year": 1877,
+    "source": "https://www.gutenberg.org/ebooks/10661",
+    "notes": "Verbatim; the passage continues.",
+    "translatorDied": 1879
+  },
+  {
+    "text": "Nothing great, said Epictetus, is produced suddenly, since not even the grape or the fig is.",
+    "author": "Epictetus",
+    "work": "Discourses",
+    "locator": "1.15",
+    "translator": "George Long",
+    "year": 1877,
+    "source": "https://www.gutenberg.org/ebooks/10661",
+    "notes": "'said Epictetus' is Arrian's narration, kept to avoid changing the wording.",
+    "translatorDied": 1879
+  },
+  {
+    "text": "Asses would rather have straw than gold.",
+    "author": "Heraclitus",
+    "work": "Fragments",
+    "locator": "fr. 51",
+    "translator": "John Burnet",
+    "year": 1908,
+    "source": "https://www.gutenberg.org/ebooks/67097",
+    "notes": "Burnet/Bywater numbering; DK 9.",
+    "translatorDied": 1928
+  },
+  {
+    "text": "Dogs bark at every one they do not know.",
+    "author": "Heraclitus",
+    "work": "Fragments",
+    "locator": "fr. 115",
+    "translator": "John Burnet",
+    "year": 1908,
+    "source": "https://www.gutenberg.org/ebooks/67097",
+    "notes": "Burnet/Bywater numbering; DK 97.",
+    "translatorDied": 1928
+  },
+  {
+    "text": "Man's character is his fate.",
+    "author": "Heraclitus",
+    "work": "Fragments",
+    "locator": "fr. 121",
+    "translator": "John Burnet",
+    "year": 1908,
+    "source": "https://www.gutenberg.org/ebooks/67097",
+    "notes": "Burnet/Bywater numbering; DK 119. The real wording behind 'Character is destiny'.",
+    "translatorDied": 1928
+  },
+  {
+    "text": "He knows nothing, and thinks that he knows; I neither know nor think that I know.",
+    "author": "Socrates",
+    "work": "in Plato's Apology",
+    "locator": "21d",
+    "translator": "Benjamin Jowett",
+    "year": 1892,
+    "source": "https://www.gutenberg.org/ebooks/1656",
+    "notes": "Clause from mid-sentence; only change is capitalising 'He'. The real text behind 'I know that I know nothing'.",
+    "translatorDied": 1893
+  },
+  {
+    "text": "Alexander came and stood over him and said, \"Ask of me any boon you like.\" To which he replied, \"Stand out of my light.\"",
+    "author": "Diogenes",
+    "work": "in Diogenes Laertius, Lives",
+    "locator": "6.38",
+    "translator": "R. D. Hicks",
+    "translatorDied": 1929,
+    "year": 1925,
+    "source": "https://en.wikisource.org/wiki/Lives_of_the_Eminent_Philosophers/Book_VI",
+    "notes": "Opening clause 'When he was sunning himself in the Craneum,' cut. The popular 'out of my sun' wording is not Hicks."
+  },
+  {
+    "text": "To the question what wine he found pleasant to drink, he replied, \"That for which other people pay.\"",
+    "author": "Diogenes",
+    "work": "in Diogenes Laertius, Lives",
+    "locator": "6.54",
+    "translator": "R. D. Hicks",
+    "translatorDied": 1929,
+    "year": 1925,
+    "source": "https://en.wikisource.org/wiki/Lives_of_the_Eminent_Philosophers/Book_VI",
+    "notes": "Whole sentence, unchanged."
+  },
+  {
+    "text": "\"Have I bored you to death with my chatter?\" \"No, indeed; for I was not attending to you.\"",
+    "author": "Aristotle",
+    "work": "in Diogenes Laertius, Lives",
+    "locator": "5.20",
+    "translator": "R. D. Hicks",
+    "translatorDied": 1929,
+    "year": 1925,
+    "source": "https://en.wikisource.org/wiki/Lives_of_the_Eminent_Philosophers/Book_V",
+    "notes": "Lead-in 'To the chatterbox who poured out a flood of talk upon him and then inquired,' and 'he replied,' cut; quoted words unchanged. An anecdote attributed to him, not from his own writings."
+  },
+  {
+    "text": "Being asked what is difficult, he replied, \"To know oneself.\" \"What is easy?\" \"To give advice to another.\"",
+    "author": "Thales",
+    "work": "in Diogenes Laertius, Lives",
+    "locator": "1.36",
+    "translator": "R. D. Hicks",
+    "translatorDied": 1929,
+    "year": 1925,
+    "source": "https://en.wikisource.org/wiki/Lives_of_the_Eminent_Philosophers/Book_I",
+    "notes": "Excerpt from a longer run of questions and answers."
+  },
+  {
+    "text": "Do not announce your plans beforehand; for, if they fail, you will be laughed at.",
+    "author": "Pittacus",
+    "work": "in Diogenes Laertius, Lives",
+    "locator": "1.78",
+    "translator": "R. D. Hicks",
+    "translatorDied": 1929,
+    "year": 1925,
+    "source": "https://en.wikisource.org/wiki/Lives_of_the_Eminent_Philosophers/Book_I",
+    "notes": "Whole sentence, unchanged. One of the Seven Sages' maxims."
+  },
+  {
+    "text": "He said he wondered why in Greece experts contend in the games and non-experts award the prizes.",
+    "author": "Anacharsis",
+    "work": "in Diogenes Laertius, Lives",
+    "locator": "1.103",
+    "translator": "R. D. Hicks",
+    "translatorDied": 1929,
+    "year": 1925,
+    "source": "https://en.wikisource.org/wiki/Lives_of_the_Eminent_Philosophers/Book_I",
+    "notes": "Whole sentence, unchanged. Reported speech."
+  },
+  {
+    "text": "Send me a little pot of cheese, that, when I like, I may fare sumptuously.",
+    "author": "Epicurus",
+    "work": "in Diogenes Laertius, Lives",
+    "locator": "10.11",
+    "translator": "R. D. Hicks",
+    "translatorDied": 1929,
+    "year": 1925,
+    "source": "https://en.wikisource.org/wiki/Lives_of_the_Eminent_Philosophers/Book_X",
+    "notes": "Unchanged. From Epicurus's own letters, quoted by Diogenes Laertius."
+  },
+  {
+    "text": "The gods have not revealed all things to men from the beginning, but by seeking they find in time what is better.",
+    "author": "Xenophanes",
+    "work": "Fragments",
+    "locator": "fr. 18",
+    "translator": "John Burnet",
+    "translatorDied": 1928,
+    "year": 1908,
+    "source": "https://www.gutenberg.org/ebooks/67097",
+    "notes": "Whole fragment, unchanged. Burnet numbering matches DK 18."
+  },
+  {
+    "text": "The beginning is the most important part of any work.",
+    "author": "Plato",
+    "work": "Republic",
+    "locator": "377a",
+    "translator": "Benjamin Jowett",
+    "translatorDied": 1893,
+    "year": 1871,
+    "source": "https://www.gutenberg.org/ebooks/1497",
+    "notes": "Socrates speaking. 'You know also that' cut and 'The' capitalised; ', especially in the case of a young and tender thing' onward cut."
+  }
+]

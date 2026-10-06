@@ -1,0 +1,147 @@
+{
+  "name": "Darren Maher",
+  "origin": "from carlow. living in dublin.",
+  "born": "2006-05",
+  "bio": [
+    "hi, i’m darren, i’m {age}, i dropped out of my software engineering course after the first year in pursuit of building great things; i feel startups are one of the best vehicles for making change in the world.",
+    "now working at meta-flux, a dublin biotechnology company.",
+    "in my free time i love writing music, sports, reading, and i’m also very interested in ancient greece at the minute."
+  ],
+  "bioLinks": {
+    "meta-flux": "https://meta-flux.com"
+  },
+  "now": {
+    "updated": "2026-10-06",
+    "working": null,
+    "reading": null,
+    "listening": null
+  },
+  "made": [
+    {
+      "name": "píosa beag",
+      "description": "irish language app. 40,000 on the waitlist, €0 on marketing.",
+      "href": "https://kclr96fm.com/carlow-teen-inspires-thousands-to-embrace-the-irish-language-with-new-app/",
+      "note": "irish for ‘a small piece’."
+    },
+    {
+      "name": "patch ’25",
+      "description": "summer accelerator in dublin for builders aged 16 to 21.",
+      "href": "https://www.joinpatch.org/"
+    },
+    {
+      "name": "recreo",
+      "description": "ai tools for therapists. built at patch.",
+      "href": "https://www.carlow-nationalist.ie/news/carlow-teen-creates-app-to-transform-healthcare-therapy_arid-68902.html"
+    },
+    {
+      "name": "new frontiers phase 2",
+      "description": "enterprise ireland’s programme for early-stage founders. graduated with recreo.",
+      "href": "https://www.newfrontiers.ie/blog/graduation-phase-2-setu-carlow"
+    },
+    {
+      "name": "meta-flux",
+      "description": "founders associate at a dublin biotech.",
+      "href": "https://meta-flux.com"
+    },
+    {
+      "name": "patch sf fellowship",
+      "description": "ten days in san francisco with patch. heading out this month.",
+      "href": "https://www.joinpatch.org/sf-fellowship"
+    }
+  ],
+  "shelf": {
+    "books": [
+      {
+        "title": "Chip War",
+        "author": "Chris Miller",
+        "take": "now reading.",
+        "spine": "#141414",
+        "isbn": "9781398504127",
+        "coverId": 15244340,
+        "pages": 464
+      },
+      {
+        "title": "On the Shortness of Life",
+        "author": "Seneca",
+        "take": "we often complain how short life is without making the most of what we have.",
+        "spine": "#f7f6f4",
+        "isbn": "9780141018812"
+      },
+      {
+        "title": "The Making of Prince of Persia",
+        "author": "Jordan Mechner",
+        "take": "a game built on an apple ii, great insight into what it’s like to build something from the ground up.",
+        "spine": "#2d469b"
+      },
+      {
+        "title": "Shoe Dog",
+        "author": "Phil Knight",
+        "take": "started selling shoes out of a car boot; great things take time.",
+        "spine": "#0e0d0c",
+        "isbn": "9781501135910"
+      },
+      {
+        "title": "Nineteen Eighty-Four",
+        "author": "George Orwell",
+        "take": "one of my favourite books, somehow gets more relevant every year.",
+        "spine": "#b3bad5",
+        "isbn": "9780141187761"
+      },
+      {
+        "title": "The Odyssey",
+        "author": "Homer",
+        "take": "odysseus the og commuter.",
+        "spine": "#5a1e27"
+      },
+      {
+        "title": "Zero to One",
+        "author": "Peter Thiel",
+        "take": "competition is for losers, tough point to argue with.",
+        "spine": "#6f92b8",
+        "isbn": "9780804139298",
+        "coverId": 7318839,
+        "pages": 224
+      },
+      {
+        "title": "Dubliners",
+        "author": "James Joyce",
+        "take": "one of joyce’s easier books, reading it made me realise on a generational level humans never really change.",
+        "spine": "#34110f"
+      },
+      {
+        "title": "Normal People",
+        "author": "Sally Rooney",
+        "take": "10/10 book, however it is emotionally devastating and i wouldn’t recommend it to anyone.",
+        "spine": "#2e4c44"
+      },
+      {
+        "title": "The Bell Jar",
+        "author": "Sylvia Plath",
+        "take": "funnier than i expected, right up until it isn’t.",
+        "spine": "#170129"
+      },
+      {
+        "title": "The Big Short",
+        "author": "Michael Lewis",
+        "take": "significantly better than the movie, i too was flabbergasted.",
+        "spine": "#030403"
+      }
+    ]
+  },
+  "email": "darrenmaher22@gmail(dot)com",
+  "elsewhere": [
+    {
+      "label": "x",
+      "href": "https://x.com/darrenmaher06"
+    },
+    {
+      "label": "linkedin",
+      "href": "https://linkedin.com/in/darren-maher"
+    }
+  ],
+  "contact": "always happy to talk to cool people. cold emails welcome.",
+  "colophon": "set in brygada 1918. bookshelf after adammaj.",
+  "colophonLinks": {
+    "adammaj": "https://x.com/MajmudarAdam"
+  }
+}

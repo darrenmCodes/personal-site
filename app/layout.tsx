@@ -1,37 +1,38 @@
 import type { Metadata, Viewport } from "next";
-import { FilmOverlay } from "@/components/film/FilmOverlay";
-import { REEL_ID } from "@/components/film/reel";
-import { ProjectorPanel } from "@/components/projector/ProjectorPanel";
-import { PROJECTOR_BOOT_SCRIPT } from "@/lib/projector/boot";
-import { fontVariables } from "./fonts";
+import { brygada } from "./fonts";
 import "./globals.css";
 
+const description = "from carlow. living in dublin.";
+
 export const metadata: Metadata = {
-  title: "Darren Maher",
-  description: "From Carlow. Living in Dublin. Loud. Funny. GMI.",
+  // Share cards need absolute image URLs. There's no domain yet (the site is
+  // local only), so set SITE_URL once it has one.
+  metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
+  title: "darren maher",
+  description,
+  openGraph: {
+    type: "website",
+    title: "darren maher",
+    description,
+    siteName: "darren maher",
+    locale: "en_IE",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "darren maher",
+    description,
+    creator: "@darrenmaher06",
+  },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f5ecd7",
+  themeColor: "#f4ecdc",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    // The boot script sets data-look/motion/commentary before hydration.
-    <html lang="en-IE" className={fontVariables} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: PROJECTOR_BOOT_SCRIPT }} />
-      </head>
-      <body>
-        <a className="skip-link" href="#main">
-          Skip to the good bit
-        </a>
-        <div id={REEL_ID} className="reel">
-          {children}
-        </div>
-        <FilmOverlay />
-        <ProjectorPanel />
-      </body>
+    <html lang="en-IE" className={brygada.variable}>
+      <body>{children}</body>
     </html>
   );
 }

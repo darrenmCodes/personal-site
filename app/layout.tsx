@@ -7,7 +7,7 @@ const description = "from carlow. living in dublin.";
 export const metadata: Metadata = {
   // Share cards need absolute image URLs. There's no domain yet (the site is
   // local only), so set SITE_URL once it has one.
-  metadataBase: new URL(process.env.SITE_URL ?? "http://localhost:3000"),
+  metadataBase: new URL(process.env.SITE_URL ?? "https://www.darrenmaher.com"),
   title: "darren maher",
   description,
   openGraph: {
